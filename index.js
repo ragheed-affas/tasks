@@ -1,44 +1,32 @@
 const express = require('express');
 const mongoose = require('mongoose');
-const cors = require('cors')
+const cors = require('cors');
+const router = require('./routes/tasks-routes');
+const notFound = require('./middleware/not-found')
+const errorHandler = require('./middleware/error-handler')
 const Task = require('./models/task');
 
 const mongoUrl = process.env['mongoUrl']
 const app = express();
 
+app.use(cors())
+app.use(express.json())
 
 async function start() {
-  await mongoose.connect(mongoUrl)
-  console.log('CONNECTED')
+  try {
+    await mongoose.connect(mongoUrl)
+    console.log('CONNECTED')
 
-  app.use(cors())
+    app.use('/api/v1/tasks', router);
+    app.use(notFound)
+    app.use(errorHandler)
 
-  app.get('/add-task', async (req, res) => {
-    const task = new Task({
-      task: 'make it work!',
-      done: false,
-    })
-
-    try {
-      const result = await task.save();
-      res.send(result);
-    } catch (err) {
-      res.send(err);
-    }
-  })
-
-  app.get('/', async (req, res) => {
-    try {
-      const tasks = await Task.find()
-      res.send(tasks)
-    } catch (err) {
-      res.send(err)
-    }
-  });
-
-  app.listen(3000, () => {
-    console.log('server started');
-  });
+    app.listen(3000, () => {
+      console.log('server started');
+    });
+  } catch (err) {
+    console.log(`could not connect to db ${err}`)
+  }
 }
 
 start().catch(err => console.log('connection error', err));
