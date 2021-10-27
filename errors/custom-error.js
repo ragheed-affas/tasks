@@ -1,9 +1,10 @@
 class CustomError extends Error {
-  constructor(status, message) {
+  constructor(message, statusCode) {
     super(message)
+    this.statusCode = statusCode
   }
-
-
 }
 
-const createCustomError = (message) => new CustomError(message);
+const createCustomError = (message, statusCode) => new CustomError(message, statusCode);
+
+module.exports = { createCustomError, CustomError }
