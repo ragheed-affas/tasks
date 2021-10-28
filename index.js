@@ -6,7 +6,8 @@ const notFound = require('./middleware/not-found')
 const errorHandler = require('./middleware/error-handler')
 const Task = require('./models/task');
 
-const mongoUrl = process.env['mongoUrl']
+const mongoUrl = process.env['MONGO_URL']
+const port = process.env.PORT
 const app = express();
 
 app.use(cors())
@@ -21,7 +22,7 @@ async function start() {
     app.use(notFound)
     app.use(errorHandler)
 
-    app.listen(3000, () => {
+    app.listen(port || 3000, () => {
       console.log('server started');
     });
   } catch (err) {

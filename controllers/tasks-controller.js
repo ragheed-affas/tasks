@@ -6,7 +6,7 @@ const getAllTasks = asyncWrapper(async (req, res, next) => {
   const tasks = await Task.find()
 
   if (tasks) {
-    res.status(200).json(tasks)
+    res.status(200).json(tasks  )
   } else {
     next(createCustomError('no such a task', 404))
   }
