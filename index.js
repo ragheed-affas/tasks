@@ -6,8 +6,9 @@ const notFound = require('./middleware/not-found')
 const errorHandler = require('./middleware/error-handler')
 const Task = require('./models/task');
 
-const mongoUrl = process.env['MONGO_URL']
+const mongoUrl = process.env.MONGO_URL
 const port = process.env.PORT
+
 const app = express();
 
 app.use(cors())
